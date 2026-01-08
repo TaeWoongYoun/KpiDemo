@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>KPI 전송</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        input { margin: 10px 0; padding: 8px; width: 200px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        #result { margin-top: 20px; padding: 15px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+<h1>KPI 데이터 전송</h1>
+
+<div>
+    <label>이전 생산량 (be_val):</label><br>
+    <input type="number" id="be_val" value="100">
+</div>
+
+<div>
+    <label>현재 생산량 (now_val):</label><br>
+    <input type="number" id="now_val" value="120">
+</div>
+
+<div>
+    <label>목표 증가율 (target_rate):</label><br>
+    <input type="number" id="target_rate" step="0.1" value="20.0">
+</div>
+
+<button onclick="sendKpi()">전송</button>
+
+<div id="result"></div>
+
+<script>
+    function sendKpi() {
+        const data = {
+            be_val: parseInt(document.getElementById('be_val').value),
+            now_val: parseInt(document.getElementById('now_val').value),
+            target_rate: parseFloat(document.getElementById('target_rate').value)
+        };
+
+        fetch('/kpi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            document.getElementById('result').innerHTML =
+                '<h3>전송 결과</h3>' +
+                '<p>이전 생산량: ' + result.be_val + '</p>' +
+                '<p>현재 생산량: ' + result.now_val + '</p>' +
+                '<p>목표 증가율: ' + result.target_rate + '%</p>' +
+                '<p>전송 성공: ' + result.sendResult + '</p>' +
+                '<p>메시지: ' + result.message + '</p>';
+        })
+        .catch(error => {
+            document.getElementById('result').innerHTML = '<p style="color:red;">에러: ' + error + '</p>';
+        });
+    }
+</script>
+</body>
+</html>
