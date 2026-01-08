@@ -1,0 +1,4 @@
+spring.application.name=KpiDemo
+kpi.cert-key=YOUR_CERT_KEY_HERE
+kpi.url-lv2=http://www.ssf-kpi.kr:8080/kpiLv2/kpiLv2InsertTst
+kpi.url-lv3=http://www.ssf-kpi.kr:8080/kpiLv3/kpiLv3InsertTst
